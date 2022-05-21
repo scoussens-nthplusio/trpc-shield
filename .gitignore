@@ -8,6 +8,4 @@ package
 .history
 .nyc_output
 
-package-lock.json
-
 tsconfig.tsbuildinfo
