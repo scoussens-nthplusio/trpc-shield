@@ -259,12 +259,12 @@ Also thanks goes to flaticon, for use of one of their icons in the logo: <a href
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/omar-dulaimi/trpc-shield.svg?style=for-the-badge
-[contributors-url]: https://github.com/omar-dulaimi/create-trpc-app/graphs/contributors
+[contributors-url]: https://github.com/omar-dulaimi/trpc-shield/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/omar-dulaimi/trpc-shield.svg?style=for-the-badge
-[forks-url]: https://github.com/omar-dulaimi/create-trpc-app/network/members
+[forks-url]: https://github.com/omar-dulaimi/trpc-shield/network/members
 [stars-shield]: https://img.shields.io/github/stars/omar-dulaimi/trpc-shield.svg?style=for-the-badge
-[stars-url]: https://github.com/omar-dulaimi/create-trpc-app/stargazers
+[stars-url]: https://github.com/omar-dulaimi/trpc-shield/stargazers
 [issues-shield]: https://img.shields.io/github/issues/omar-dulaimi/trpc-shield.svg?style=for-the-badge
-[issues-url]: https://github.com/omar-dulaimi/create-trpc-app/issues
-[license-shield]: https://img.shields.io/github/license/omar-dulaimi/create-trpc-app?style=for-the-badge
-[license-url]: https://github.com/omar-dulaimi/create-trpc-app/blob/master/LICENSE
+[issues-url]: https://github.com/omar-dulaimi/trpc-shield/issues
+[license-shield]: https://img.shields.io/github/license/omar-dulaimi/trpc-shield?style=for-the-badge
+[license-url]: https://github.com/omar-dulaimi/trpc-shield/blob/master/LICENSE
