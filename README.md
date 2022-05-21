@@ -106,7 +106,7 @@ export function createRouter() {
 
 ### `shield(rules?, options?)`
 
-> Generates GraphQL Middleware layer from your rules.
+> Generates tRPC Middleware layer from your rules.
 
 #### `rules`
 
