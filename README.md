@@ -110,7 +110,7 @@ export function createRouter() {
 
 #### `rules`
 
-A rule map must match your schema definition. All rules must be created using the `rule` function.
+All rules must be created using the `rule` function.
 
 ##### Limitations
 
@@ -228,7 +228,7 @@ const permissions = shield(
 
 > Whitelisting/Blacklisting is no longer available in versions after `3.x.x`, and has been replaced in favor of `fallbackRule`.
 
-Shield allows you to lock-in your schema. This way, you can seamlessly develop and publish your work without worrying about exposing your data. To lock in your service simply set `fallbackRule` to `deny` like this;
+Shield allows you to lock-in access. This way, you can seamlessly develop and publish your work without worrying about exposing your data. To lock in your service simply set `fallbackRule` to `deny` like this;
 
 ```ts
 const permissions = shield(
