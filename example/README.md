@@ -9,7 +9,7 @@ This example shows how to **implement an Express server with tRPC, tRPC Shield a
 Download this example:
 
 ```bash
-npx create-trpc-appx --example express-trpc-shield
+npx create-trpc-appx --example https://github.com/omar-dulaimi/trpc-shield/tree/master/example
 ```
 
 Install npm dependencies:
