@@ -101,7 +101,7 @@ export function createRouter() {
   return trpc.router<Context>().middleware(permissions)
 }
 ```
-
+For a fully working example, [go here](https://github.com/omar-dulaimi/trpc-shield/tree/master/example).
 ## Documentation
 
 ### `shield(rules?, options?)`
