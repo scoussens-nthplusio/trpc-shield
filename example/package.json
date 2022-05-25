@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.14.0",
-    "@trpc/server": "^9.23.4",
+    "@trpc/server": "^9.23.6",
     "express": "^4.17.1",
     "prisma-trpc-generator": "^0.1.7",
     "prisma-trpc-shield-generator": "^0.0.0-rc.2",
