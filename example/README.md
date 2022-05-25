@@ -62,25 +62,12 @@ export function createProtectedRouter() {
   return (
     trpc
       .router<Context>()
-      // @ts-ignore
       .middleware(permissions)
   );
 }
 ```
 
-### 5. Add a `//@ts-ignore` in routers root
-
-For now, as a temporary workaround, we need to add `//@ts-ignore` in two places
-
-- In routers `./routers/index.ts`:
-
-```ts
-export const appRouter = createProtectedRouter()
-  // @ts-ignore
-  .merge('user.', usersRouter);
-```
-
-### 6. Start the server
+### 5. Start the server
 
 Launch your server with this command:
 
