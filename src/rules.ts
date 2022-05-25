@@ -26,7 +26,7 @@ export class Rule implements IRule {
 
 
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     try {
       /* Resolve */
@@ -62,7 +62,7 @@ export class Rule implements IRule {
 
 
   private executeRule(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): string | boolean | Error | Promise<IRuleResult> {
     return this.func(ctx, type, path, rawInput, options);
   }
@@ -79,7 +79,7 @@ export class LogicRule implements ILogicRule {
    * By default logic rule resolves to false.
    */
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     return false;
   }
@@ -88,7 +88,7 @@ export class LogicRule implements ILogicRule {
    * Evaluates all the rules.
    */
   async evaluate(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult[]> {
     const rules = this.getRules();
     const tasks = rules.map((rule) =>
@@ -117,7 +117,7 @@ export class RuleOr extends LogicRule {
    * Makes sure that at least one of them has evaluated to true.
    */
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     const result = await this.evaluate(ctx, type, path, rawInput, options);
 
@@ -139,7 +139,7 @@ export class RuleAnd extends LogicRule {
    * Makes sure that all of them have resolved to true.
    */
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     const result = await this.evaluate(ctx, type, path, rawInput, options);
 
@@ -161,7 +161,7 @@ export class RuleChain extends LogicRule {
    * Makes sure that all of them have resolved to true.
    */
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     const result = await this.evaluate(ctx, type, path, rawInput, options);
 
@@ -177,7 +177,7 @@ export class RuleChain extends LogicRule {
    * Evaluates all the rules.
    */
   async evaluate(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult[]> {
     const rules = this.getRules();
 
@@ -207,7 +207,7 @@ export class RuleRace extends LogicRule {
    * Makes sure that at least one of them resolved to true.
    */
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     const result = await this.evaluate(ctx, type, path, rawInput, options);
 
@@ -223,7 +223,7 @@ export class RuleRace extends LogicRule {
    * Evaluates all the rules.
    */
   async evaluate(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult[]> {
     const rules = this.getRules();
 
@@ -258,7 +258,7 @@ export class RuleNot extends LogicRule {
    *
    */
   async resolve(
-    ctx: { [name: string]: any }, type: string, path: string, rawInput: string, options: IOptions
+    ctx: { [name: string]: any }, type: string, path: string, rawInput: unknown, options: IOptions
   ): Promise<IRuleResult> {
     const [res] = await this.evaluate(ctx, type, path, rawInput, options);
 

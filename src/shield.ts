@@ -1,14 +1,9 @@
-import { ValidationError, validateRuleTree } from "./validation";
-import {
-  IRules,
-  IOptions,
-  IOptionsConstructor,
-  ShieldRule,
-  IFallbackErrorType,
-} from "./types";
-import { generateMiddlewareFromRuleTree } from "./generator";
-import { allow } from "./constructors";
-import { withDefault } from "./utils";
+import { ValidationError, validateRuleTree } from './validation'
+import { IRules, IOptions, IOptionsConstructor, ShieldRule, IFallbackErrorType } from './types'
+import { generateMiddlewareFromRuleTree } from './generator'
+import { allow } from './constructors'
+import { withDefault } from './utils'
+import { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares'
 
 /**
  *
@@ -19,18 +14,16 @@ import { withDefault } from "./utils";
  *
  */
 function normalizeOptions(options: IOptionsConstructor): IOptions {
-  if (typeof options.fallbackError === "string") {
-    options.fallbackError = new Error(options.fallbackError);
+  if (typeof options.fallbackError === 'string') {
+    options.fallbackError = new Error(options.fallbackError)
   }
 
   return {
     debug: options.debug !== undefined ? options.debug : false,
     allowExternalErrors: withDefault(false)(options.allowExternalErrors),
     fallbackRule: withDefault<ShieldRule>(allow)(options.fallbackRule),
-    fallbackError: withDefault<IFallbackErrorType>(
-      new Error("Not Authorised!")
-    )(options.fallbackError),
-  };
+    fallbackError: withDefault<IFallbackErrorType>(new Error('Not Authorised!'))(options.fallbackError),
+  }
 }
 
 /**
@@ -41,21 +34,14 @@ function normalizeOptions(options: IOptionsConstructor): IOptions {
  * Validates rules and generates middleware from defined rule tree.
  *
  */
-export function shield(
-  ruleTree: IRules,
-  options: IOptionsConstructor = {}
-) {
-  const normalizedOptions = normalizeOptions(options);
-  const ruleTreeValidity = validateRuleTree(ruleTree);
+export function shield(ruleTree: IRules, options: IOptionsConstructor = {}): MiddlewareFunction<any, any, any> {
+  const normalizedOptions = normalizeOptions(options)
+  const ruleTreeValidity = validateRuleTree(ruleTree)
 
-  if (ruleTreeValidity.status === "ok") {
-    const middleware = generateMiddlewareFromRuleTree(
-      ruleTree,
-      normalizedOptions
-    );
-
-    return middleware;
+  if (ruleTreeValidity.status === 'ok') {
+    const middleware = generateMiddlewareFromRuleTree(ruleTree, normalizedOptions)
+    return middleware
   } else {
-    throw new ValidationError(ruleTreeValidity.message);
+    throw new ValidationError(ruleTreeValidity.message)
   }
 }
