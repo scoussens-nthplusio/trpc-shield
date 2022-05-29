@@ -103,7 +103,6 @@ const permissions = shield({
 })
 
 export function createRouter() {
-  // @ts-ignore
   return trpc.router<Context>().middleware(permissions)
 }
 ```
