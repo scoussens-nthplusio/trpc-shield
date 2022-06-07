@@ -71,6 +71,8 @@ yarn add trpc-shield
 
 ## Usage
 
+- Don't forget to star this repo 😉
+
 ```ts
 import * as trpc from '@trpc/server'
 import { rule, shield, and, or, not } from 'trpc-shield'
