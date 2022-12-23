@@ -9,9 +9,7 @@ import { Rule, LogicRule } from './rules'
  *
  */
 export function isRule(x: any): x is IRule {
-  return (
-    x instanceof Rule || (x && x.constructor && x.constructor.name === 'Rule')
-  )
+  return x instanceof Rule || (x && x.constructor && x.constructor.name === 'Rule')
 }
 
 /**
@@ -55,10 +53,7 @@ export function isRuleFunction(x: any): x is ShieldRule {
  *
  */
 export function isRuleFieldMap(x: any): x is IRuleFieldMap {
-  return (
-    typeof x === 'object' &&
-    Object.values(x).every((rule) => isRuleFunction(rule))
-  )
+  return typeof x === 'object' && Object.values(x).every((rule) => isRuleFunction(rule))
 }
 
 /**
@@ -70,10 +65,7 @@ export function isRuleFieldMap(x: any): x is IRuleFieldMap {
  * evaluates to true from particular function.
  *
  */
-export function flattenObjectOf<T>(
-  obj: { [key: string]: any },
-  f: (x: any) => boolean,
-): T[] {
+export function flattenObjectOf<T>(obj: { [key: string]: any }, f: (x: any) => boolean): T[] {
   const values = Object.keys(obj).reduce<T[]>((acc, key) => {
     const val = obj[key]
     if (f(val)) {

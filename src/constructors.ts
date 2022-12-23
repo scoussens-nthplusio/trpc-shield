@@ -1,18 +1,5 @@
-import {
-  IRuleFunction,
-  IRuleConstructorOptions,
-  ShieldRule,
-} from './types'
-import {
-  Rule,
-  RuleAnd,
-  RuleOr,
-  RuleNot,
-  RuleTrue,
-  RuleFalse,
-  RuleChain,
-  RuleRace,
-} from './rules'
+import { Rule, RuleAnd, RuleChain, RuleFalse, RuleNot, RuleOr, RuleRace, RuleTrue } from './rules'
+import { IRuleConstructorOptions, IRuleFunction, ShieldRule } from './types'
 
 /**
  *
@@ -23,40 +10,38 @@ import {
  * once we start generating middleware from our ruleTree.
  *
  * 1.
- * const auth = rule()(async (ctx, type, path, rawInput, options) => {
+ * const auth = rule()(async (ctx, type, path, input, rawInput, options) => {
  *  return true
  * })
  *
  * 2.
- * const auth = rule('name')(async (ctx, type, path, rawInput, options) => {
+ * const auth = rule('name')(async (ctx, type, path, input, rawInput, options) => {
  *  return true
  * })
  *
  * 3.
  * const auth = rule({
  *  name: 'name',
- * })(async (ctx, type, path, rawInput, options) => {
+ * })(async (ctx, type, path, input, rawInput, options) => {
  *  return true
  * })
  *
  */
-export const rule = (
-  name?: string,
-  options?: IRuleConstructorOptions,
-) => (func: IRuleFunction): Rule => {
-  if (typeof name === 'object') {
-    options = name
-    name = Math.random().toString()
-  } else if (typeof name === 'string') {
-    options = options || {}
-  } else {
-    name = Math.random().toString()
-    options = {}
+export const rule =
+  (name?: string, options?: IRuleConstructorOptions) =>
+  (func: IRuleFunction): Rule => {
+    if (typeof name === 'object') {
+      options = name
+      name = Math.random().toString()
+    } else if (typeof name === 'string') {
+      options = options || {}
+    } else {
+      name = Math.random().toString()
+      options = {}
+    }
+
+    return new Rule(name, func, {})
   }
-
-  return new Rule(name, func, {})
-}
-
 
 /**
  *

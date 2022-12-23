@@ -39,6 +39,9 @@
       <a href="#overview">Overview</a>
     </li>
     <li>
+      <a href="#supported-trpc-versions">Supported tRPC Versions</a>
+    </li>
+    <li>
       <a href="#installation">Installation</a>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -54,6 +57,16 @@
 tRPC Shield helps you create a permission layer for your application. Using an intuitive rule-API, you'll gain the power of the shield engine on every request. This way you can make sure no internal data will be exposed.
 
 <!-- GETTING STARTED -->
+## Supported tRPC Versions
+
+### tRPC 10
+
+- 0.2.0 and higher
+
+### tRPC 9
+
+- 0.1.2 and lower
+
 
 ## Installation
 
@@ -79,15 +92,15 @@ import { rule, shield, and, or, not } from 'trpc-shield'
 
 // Rules
 
-const isAuthenticated = rule()(async (ctx, type, path, rawInput) => {
+const isAuthenticated = rule()(async (ctx, type, path, input, rawInput) => {
   return ctx.user !== null
 })
 
-const isAdmin = rule()(async (ctx, type, path, rawInput) => {
+const isAdmin = rule()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'admin'
 })
 
-const isEditor = rule()(async (ctx, type, path, rawInput) => {
+const isEditor = rule()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'editor'
 })
 
@@ -104,9 +117,12 @@ const permissions = shield({
   },
 })
 
-export function createRouter() {
-  return trpc.router<Context>().middleware(permissions)
-}
+export const t = trpc.initTRPC.context<Context>().create();
+
+export const permissionsMiddleware = t.middleware(permissions);
+
+export const shieldedProcedure = t.procedure.use(permissionsMiddleware);
+
 ```
 For a fully working example, [go here](https://github.com/omar-dulaimi/trpc-shield/tree/master/example).
 ## Documentation
@@ -125,10 +141,10 @@ All rules must be created using the `rule` function.
 
 ```jsx
 // Normal
-const admin = rule()(async (ctx, type, path, rawInput) => true)
+const admin = rule()(async (ctx, type, path, input, rawInput) => true)
 
 // With external data
-const admin = (bool) => rule(`name-${bool}`)(async (ctx, type, path, rawInput) => bool)
+const admin = (bool) => rule(`name-${bool}`)(async (ctx, type, path, input, rawInput) => bool)
 ```
 
 #### `options`
@@ -181,15 +197,15 @@ By default `shield` ensures no internal data is exposed to client if it was not 
 ```tsx
 import { shield, rule, and, or } from 'trpc-shield'
 
-const isAdmin = rule()(async (ctx, type, path, rawInput) => {
+const isAdmin = rule()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'admin'
 })
 
-const isEditor = rule()(async (ctx, type, path, rawInput) => {
+const isEditor = rule()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'editor'
 })
 
-const isOwner = rule()(async (ctx, type, path, rawInput) => {
+const isOwner = rule()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.items.some((id) => id === parent.id)
 })
 
@@ -232,8 +248,6 @@ const permissions = shield(
 ```
 
 ### Whitelisting vs Blacklisting
-
-> Whitelisting/Blacklisting is no longer available in versions after `3.x.x`, and has been replaced in favor of `fallbackRule`.
 
 Shield allows you to lock-in access. This way, you can seamlessly develop and publish your work without worrying about exposing your data. To lock in your service simply set `fallbackRule` to `deny` like this;
 
