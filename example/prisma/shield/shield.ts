@@ -1,4 +1,4 @@
-import { allow, deny, shield } from '../../../dist';
+import { allow, deny, shield } from 'trpc-shield';
 
 export const permissions = shield({
   query: {
