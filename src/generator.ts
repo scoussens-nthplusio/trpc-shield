@@ -24,7 +24,7 @@ export function generateMiddlewareFromRuleTree(ruleTree: IRules, options: IOptio
   }) => {
     const opWithPath: Array<string> = path.split('.')
     const opName: string = opWithPath[opWithPath.length - 1]
-    const rule = ruleTree?.[type]?.[opName] || options.fallbackRule;
+    const rule = ruleTree?.[type]?.[opName] || options.fallbackRule
 
     if (rule) {
       return rule?.resolve(ctx, type, path, rawInput, options).then((result: any) => {

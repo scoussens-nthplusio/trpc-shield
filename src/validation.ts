@@ -10,19 +10,14 @@ import { isRuleFunction, flattenObjectOf, isLogicRule } from './utils'
  * to different rules.
  *
  */
-export function validateRuleTree(
-  ruleTree: IRules,
-): { status: 'ok' } | { status: 'err'; message: string } {
+export function validateRuleTree(ruleTree: IRules): { status: 'ok' } | { status: 'err'; message: string } {
   const rules = extractRules(ruleTree)
 
   const valid = rules.reduce<{ map: Map<string, IRule>; duplicates: string[] }>(
     ({ map, duplicates }, rule) => {
       if (!map.has(rule.name)) {
         return { map: map.set(rule.name, rule), duplicates }
-      } else if (
-        !map.get(rule.name)!.equals(rule) &&
-        !duplicates.includes(rule.name)
-      ) {
+      } else if (!map.get(rule.name)!.equals(rule) && !duplicates.includes(rule.name)) {
         return {
           map: map.set(rule.name, rule),
           duplicates: [...duplicates, rule.name],

@@ -1,18 +1,5 @@
-import {
-  IRuleFunction,
-  IRuleConstructorOptions,
-  ShieldRule,
-} from './types'
-import {
-  Rule,
-  RuleAnd,
-  RuleOr,
-  RuleNot,
-  RuleTrue,
-  RuleFalse,
-  RuleChain,
-  RuleRace,
-} from './rules'
+import { Rule, RuleAnd, RuleChain, RuleFalse, RuleNot, RuleOr, RuleRace, RuleTrue } from './rules'
+import { IRuleConstructorOptions, IRuleFunction, ShieldRule } from './types'
 
 /**
  *
@@ -40,23 +27,21 @@ import {
  * })
  *
  */
-export const rule = (
-  name?: string,
-  options?: IRuleConstructorOptions,
-) => (func: IRuleFunction): Rule => {
-  if (typeof name === 'object') {
-    options = name
-    name = Math.random().toString()
-  } else if (typeof name === 'string') {
-    options = options || {}
-  } else {
-    name = Math.random().toString()
-    options = {}
+export const rule =
+  (name?: string, options?: IRuleConstructorOptions) =>
+  (func: IRuleFunction): Rule => {
+    if (typeof name === 'object') {
+      options = name
+      name = Math.random().toString()
+    } else if (typeof name === 'string') {
+      options = options || {}
+    } else {
+      name = Math.random().toString()
+      options = {}
+    }
+
+    return new Rule(name, func, {})
   }
-
-  return new Rule(name, func, {})
-}
-
 
 /**
  *
