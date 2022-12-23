@@ -36,6 +36,6 @@
   "homepage": "https://github.com/omar-dulaimi/trpc-shield#readme",
   "private": true,
   "dependencies": {
-    "@trpc/server": "^9.23.6"
+    "@trpc/server": "^10.6.0"
   }
 }

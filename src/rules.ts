@@ -1,5 +1,5 @@
-import { IRuleFunction, IRule, IRuleConstructorOptions, ILogicRule, ShieldRule, IRuleResult, IOptions } from './types'
 import { isUndefined } from 'util'
+import { ILogicRule, IOptions, IRule, IRuleConstructorOptions, IRuleFunction, IRuleResult, ShieldRule } from './types'
 
 export class Rule implements IRule {
   readonly name: string
@@ -16,12 +16,13 @@ export class Rule implements IRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
     try {
       /* Resolve */
-      const res = await this.executeRule(ctx, type, path, rawInput, options)
+      const res = await this.executeRule(ctx, type, path, input, rawInput, options)
 
       if (res instanceof Error) {
         return res
@@ -55,10 +56,11 @@ export class Rule implements IRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): string | boolean | Error | Promise<IRuleResult> {
-    return this.func(ctx, type, path, rawInput, options)
+    return this.func(ctx, type, path, input, rawInput, options)
   }
 }
 
@@ -76,6 +78,7 @@ export class LogicRule implements ILogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
@@ -89,11 +92,12 @@ export class LogicRule implements ILogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult[]> {
     const rules = this.getRules()
-    const tasks = rules.map((rule) => rule.resolve(ctx, type, path, rawInput, options))
+    const tasks = rules.map((rule) => rule.resolve(ctx, type, path, input, rawInput, options))
 
     return Promise.all(tasks)
   }
@@ -120,10 +124,11 @@ export class RuleOr extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
-    const result = await this.evaluate(ctx, type, path, rawInput, options)
+    const result = await this.evaluate(ctx, type, path, input, rawInput, options)
 
     if (result.every((res) => res !== true)) {
       const customError = result.find((res) => res instanceof Error)
@@ -146,10 +151,11 @@ export class RuleAnd extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
-    const result = await this.evaluate(ctx, type, path, rawInput, options)
+    const result = await this.evaluate(ctx, type, path, input, rawInput, options)
 
     if (result.some((res) => res !== true)) {
       const customError = result.find((res) => res instanceof Error)
@@ -172,10 +178,11 @@ export class RuleChain extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
-    const result = await this.evaluate(ctx, type, path, rawInput, options)
+    const result = await this.evaluate(ctx, type, path, input, rawInput, options)
 
     if (result.some((res) => res !== true)) {
       const customError = result.find((res) => res instanceof Error)
@@ -192,6 +199,7 @@ export class RuleChain extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult[]> {
@@ -201,7 +209,7 @@ export class RuleChain extends LogicRule {
 
     async function iterate([rule, ...otherRules]: ShieldRule[]): Promise<IRuleResult[]> {
       if (isUndefined(rule)) return []
-      return rule.resolve(ctx, type, path, rawInput, options).then((res) => {
+      return rule.resolve(ctx, type, path, input, rawInput, options).then((res) => {
         if (res !== true) {
           return [res]
         } else {
@@ -224,10 +232,11 @@ export class RuleRace extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
-    const result = await this.evaluate(ctx, type, path, rawInput, options)
+    const result = await this.evaluate(ctx, type, path, input, rawInput, options)
 
     if (result.some((res) => res === true)) {
       return true
@@ -244,6 +253,7 @@ export class RuleRace extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult[]> {
@@ -253,7 +263,7 @@ export class RuleRace extends LogicRule {
 
     async function iterate([rule, ...otherRules]: ShieldRule[]): Promise<IRuleResult[]> {
       if (isUndefined(rule)) return []
-      return rule.resolve(ctx, type, path, rawInput, options).then((res) => {
+      return rule.resolve(ctx, type, path, input, rawInput, options).then((res) => {
         if (res === true) {
           return [res]
         } else {
@@ -281,10 +291,11 @@ export class RuleNot extends LogicRule {
     ctx: { [name: string]: any },
     type: string,
     path: string,
+    input: { [name: string]: any },
     rawInput: unknown,
     options: IOptions,
   ): Promise<IRuleResult> {
-    const [res] = await this.evaluate(ctx, type, path, rawInput, options)
+    const [res] = await this.evaluate(ctx, type, path, input, rawInput, options)
 
     if (res instanceof Error) {
       return true

@@ -10,19 +10,19 @@ import { IRuleConstructorOptions, IRuleFunction, ShieldRule } from './types'
  * once we start generating middleware from our ruleTree.
  *
  * 1.
- * const auth = rule()(async (ctx, type, path, rawInput, options) => {
+ * const auth = rule()(async (ctx, type, path, input, rawInput, options) => {
  *  return true
  * })
  *
  * 2.
- * const auth = rule('name')(async (ctx, type, path, rawInput, options) => {
+ * const auth = rule('name')(async (ctx, type, path, input, rawInput, options) => {
  *  return true
  * })
  *
  * 3.
  * const auth = rule({
  *  name: 'name',
- * })(async (ctx, type, path, rawInput, options) => {
+ * })(async (ctx, type, path, input, rawInput, options) => {
  *  return true
  * })
  *
