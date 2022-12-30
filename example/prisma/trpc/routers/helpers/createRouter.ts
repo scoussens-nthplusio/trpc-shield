@@ -1,12 +1,26 @@
-import * as trpc from '@trpc/server'
+import * as trpc from "@trpc/server";
+import { permissions } from "../../../shield/shield";
 
-import { Context } from '../../../../src/context'
-import { permissions } from '../../../shield/shield'
+import { Context } from '../../../../src/context';
 
-export const t = trpc.initTRPC.context<Context>().create()
+export const t = trpc.initTRPC.context<Context>().create();
 
-export const permissionsMiddleware = t.middleware(permissions)
+export const globalMiddleware = t.middleware(async ({ ctx, next }) => {
+  console.log('inside middleware!')
+  return next()
+});
 
-export const shieldedProcedure = t.procedure.use(permissionsMiddleware)
+export const permissionsMiddleware = t.middleware(permissions);
 
-export const publicProcedure = t.procedure
+export const publicProcedure = t.procedure;
+
+export const shieldedProcedure = t.procedure
+
+  .use(globalMiddleware)
+
+  .use(permissionsMiddleware)
+
+
+
+
+

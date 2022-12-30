@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client'
 
 const Schema: z.ZodType<Prisma.NestedStringFilter> = z
   .object({
@@ -14,10 +14,8 @@ const Schema: z.ZodType<Prisma.NestedStringFilter> = z
     contains: z.string().optional(),
     startsWith: z.string().optional(),
     endsWith: z.string().optional(),
-    not: z
-      .union([z.string(), z.lazy(() => NestedStringFilterObjectSchema)])
-      .optional(),
+    not: z.union([z.string(), z.lazy(() => NestedStringFilterObjectSchema)]).optional(),
   })
-  .strict();
+  .strict()
 
-export const NestedStringFilterObjectSchema = Schema;
+export const NestedStringFilterObjectSchema = Schema

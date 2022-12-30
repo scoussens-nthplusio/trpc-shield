@@ -1,10 +1,10 @@
-import { z } from 'zod';
-import { IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.schema';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
-import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
-import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
+import { z } from 'zod'
+import { IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.schema'
+import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema'
+import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema'
+import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema'
 
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client'
 
 const Schema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z
   .object({
@@ -24,37 +24,22 @@ const Schema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z
         z.lazy(() => UserScalarWhereWithAggregatesInputObjectSchema).array(),
       ])
       .optional(),
-    id: z
-      .union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number()])
-      .optional(),
-    createdAt: z
-      .union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()])
-      .optional(),
+    id: z.union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number()]).optional(),
+    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.date()]).optional(),
     username: z
-      .union([
-        z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
-        z.string(),
-      ])
+      .union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()])
       .optional()
       .nullable(),
     password: z
-      .union([
-        z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
-        z.string(),
-      ])
+      .union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()])
       .optional()
       .nullable(),
-    email: z
-      .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
-      .optional(),
+    email: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     googleId: z
-      .union([
-        z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
-        z.string(),
-      ])
+      .union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()])
       .optional()
       .nullable(),
   })
-  .strict();
+  .strict()
 
-export const UserScalarWhereWithAggregatesInputObjectSchema = Schema;
+export const UserScalarWhereWithAggregatesInputObjectSchema = Schema
