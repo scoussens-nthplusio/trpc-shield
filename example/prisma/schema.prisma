@@ -3,13 +3,18 @@ generator client {
 }
 
 generator trpc {
-  provider = "prisma-trpc-generator"
-  output   = "./trpc"
+  provider          = "prisma-trpc-generator"
+  output            = "./trpc"
+  isGenerateSelect  = true
+  isGenerateInclude = true
+  withMiddleware    = true
+  withShield        = true
+  contextPath    = "../../../../src/context"
 }
 
 generator trpc_shield {
   provider = "prisma-trpc-shield-generator"
-  output = "./shield"
+  output   = "./shield"
 }
 
 datasource db {

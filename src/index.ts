@@ -1,3 +1,4 @@
-export { IRules, IRule } from './types'
+export { allow, and, chain, deny, not, or, race, rule } from './constructors'
 export { shield } from './shield'
-export { rule, allow, deny, and, chain, race, or, not } from './constructors'
+export { IRule, IRules } from './types'
+

@@ -1,21 +1,16 @@
-import { z } from 'zod';
-import { UserSelectObjectSchema } from './objects/UserSelect.schema';
-import { UserWhereInputObjectSchema } from './objects/UserWhereInput.schema';
-import { UserOrderByWithRelationInputObjectSchema } from './objects/UserOrderByWithRelationInput.schema';
-import { UserWhereUniqueInputObjectSchema } from './objects/UserWhereUniqueInput.schema';
-import { UserScalarFieldEnumSchema } from './enums/UserScalarFieldEnum.schema';
+import { z } from 'zod'
+import { UserSelectObjectSchema } from './objects/UserSelect.schema'
+import { UserOrderByWithRelationInputObjectSchema } from './objects/UserOrderByWithRelationInput.schema'
+import { UserWhereInputObjectSchema } from './objects/UserWhereInput.schema'
+import { UserWhereUniqueInputObjectSchema } from './objects/UserWhereUniqueInput.schema'
+import { UserScalarFieldEnumSchema } from './enums/UserScalarFieldEnum.schema'
 
 export const UserFindManySchema = z.object({
   select: z.lazy(() => UserSelectObjectSchema.optional()),
+  orderBy: z.union([UserOrderByWithRelationInputObjectSchema, UserOrderByWithRelationInputObjectSchema.array()]).optional(),
   where: UserWhereInputObjectSchema.optional(),
-  orderBy: z
-    .union([
-      UserOrderByWithRelationInputObjectSchema,
-      UserOrderByWithRelationInputObjectSchema.array(),
-    ])
-    .optional(),
   cursor: UserWhereUniqueInputObjectSchema.optional(),
   take: z.number().optional(),
   skip: z.number().optional(),
   distinct: z.array(UserScalarFieldEnumSchema).optional(),
-});
+})

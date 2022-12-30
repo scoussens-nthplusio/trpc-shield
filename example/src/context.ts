@@ -5,6 +5,7 @@ export const createContext = () => {
   const prisma = new PrismaClient()
   return {
     prisma,
+    user: null
   }
 }
 

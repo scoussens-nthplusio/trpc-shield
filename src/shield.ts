@@ -1,7 +1,8 @@
-import { MiddlewareFunction } from '@trpc/server'
+import type { MiddlewareFunction, ProcedureParams } from '@trpc/server'
+import type { AnyRootConfig } from '@trpc/server/dist/core/internals/config'
 import { allow } from './constructors'
 import { generateMiddlewareFromRuleTree } from './generator'
-import { IFallbackErrorType, IOptions, IOptionsConstructor, IRules, ShieldRule } from './types'
+import type { IFallbackErrorType, IOptions, IOptionsConstructor, IRules, ShieldRule } from './types'
 import { withDefault } from './utils'
 import { validateRuleTree, ValidationError } from './validation'
 
@@ -13,7 +14,7 @@ import { validateRuleTree, ValidationError } from './validation'
  * shield can process.
  *
  */
-function normalizeOptions(options: IOptionsConstructor): IOptions {
+function normalizeOptions<TContext extends Record<string, any>>(options: IOptionsConstructor<TContext>): IOptions<TContext> {
   if (typeof options.fallbackError === 'string') {
     options.fallbackError = new Error(options.fallbackError)
   }
@@ -21,8 +22,8 @@ function normalizeOptions(options: IOptionsConstructor): IOptions {
   return {
     debug: options.debug !== undefined ? options.debug : false,
     allowExternalErrors: withDefault(false)(options.allowExternalErrors),
-    fallbackRule: withDefault<ShieldRule>(allow)(options.fallbackRule),
-    fallbackError: withDefault<IFallbackErrorType>(new Error('Not Authorised!'))(options.fallbackError),
+    fallbackRule: withDefault<ShieldRule<TContext>>(allow)(options.fallbackRule),
+    fallbackError: withDefault<IFallbackErrorType<TContext>>(new Error('Not Authorised!'))(options.fallbackError),
   }
 }
 
@@ -34,13 +35,40 @@ function normalizeOptions(options: IOptionsConstructor): IOptions {
  * Validates rules and generates middleware from defined rule tree.
  *
  */
-export function shield(ruleTree: IRules, options: IOptionsConstructor = {}): MiddlewareFunction<any, any> {
+/* 
+$types, 
+*/
+export function shield<
+  TContext extends Record<string, any>,
+  // TConfig extends RootConfig<{
+  //   transformer: CombinedDataTransformer
+  //   errorShape: DefaultErrorShape
+  //   ctx: TContext
+  //   meta: Record<string, unknown>
+  //   errorFormatter: ErrorFormatter<Record<string, any>, any>
+  //   allowOutsideOfServer: boolean
+  //   isServer: boolean
+  //   isDev: boolean
+  //   $types: any
+  // }>,
+  TContextOut = TContext,
+  TInputIn = unknown,
+  TInputOut = unknown,
+  TOutputIn = unknown,
+  TOutputOut = unknown,
+  TMeta = unknown,
+>(
+  ruleTree: IRules<TContext>,
+  options: IOptionsConstructor<TContext> = {},
+): MiddlewareFunction<
+  ProcedureParams<AnyRootConfig, TContextOut, TInputIn, TInputOut, TOutputIn, TOutputOut, TMeta>,
+  ProcedureParams<AnyRootConfig, TContextOut, TInputIn, TInputOut, TOutputIn, TOutputOut, TMeta>
+> {
   const normalizedOptions = normalizeOptions(options)
   const ruleTreeValidity = validateRuleTree(ruleTree)
 
   if (ruleTreeValidity.status === 'ok') {
-    const middleware = generateMiddlewareFromRuleTree(ruleTree, normalizedOptions)
-    return middleware
+    return generateMiddlewareFromRuleTree(ruleTree, normalizedOptions) as any
   } else {
     throw new ValidationError(ruleTreeValidity.message)
   }
