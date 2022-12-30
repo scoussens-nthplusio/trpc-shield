@@ -87,26 +87,27 @@ yarn add trpc-shield
 - Don't forget to star this repo 😉
 
 ```ts
-import * as trpc from '@trpc/server'
-import { rule, shield, and, or, not } from 'trpc-shield'
+import * as trpc from '@trpc/server';
+import { rule, shield, and, or, not } from 'trpc-shield';
+import { Context } from '../../src/context';
 
 // Rules
 
-const isAuthenticated = rule()(async (ctx, type, path, input, rawInput) => {
+const isAuthenticated = rule<Context>()(async (ctx, type, path, input, rawInput) => {
   return ctx.user !== null
 })
 
-const isAdmin = rule()(async (ctx, type, path, input, rawInput) => {
+const isAdmin = rule<Context>()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'admin'
 })
 
-const isEditor = rule()(async (ctx, type, path, input, rawInput) => {
+const isEditor = rule<Context>()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'editor'
 })
 
 // Permissions
 
-const permissions = shield({
+const permissions = shield<Context>({
   query: {
     frontPage: not(isAuthenticated),
     fruits: and(isAuthenticated, or(isAdmin, isEditor)),
@@ -141,10 +142,10 @@ All rules must be created using the `rule` function.
 
 ```jsx
 // Normal
-const admin = rule()(async (ctx, type, path, input, rawInput) => true)
+const admin = rule<Context>()(async (ctx, type, path, input, rawInput) => true)
 
 // With external data
-const admin = (bool) => rule(`name-${bool}`)(async (ctx, type, path, input, rawInput) => bool)
+const admin = (bool) => rule<Context>(`name-${bool}`)(async (ctx, type, path, input, rawInput) => bool)
 ```
 
 #### `options`
@@ -197,19 +198,19 @@ By default `shield` ensures no internal data is exposed to client if it was not 
 ```tsx
 import { shield, rule, and, or } from 'trpc-shield'
 
-const isAdmin = rule()(async (ctx, type, path, input, rawInput) => {
+const isAdmin = rule<Context>()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'admin'
 })
 
-const isEditor = rule()(async (ctx, type, path, input, rawInput) => {
+const isEditor = rule<Context>()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.role === 'editor'
 })
 
-const isOwner = rule()(async (ctx, type, path, input, rawInput) => {
+const isOwner = rule<Context>()(async (ctx, type, path, input, rawInput) => {
   return ctx.user.items.some((id) => id === parent.id)
 })
 
-const permissions = shield({
+const permissions = shield<Context>({
   query: {
     users: or(isAdmin, isEditor),
   },
@@ -224,7 +225,7 @@ const permissions = shield({
 tRPC Shield allows you to set a globally defined fallback error that is used instead of `Not Authorised!` default response. This might be particularly useful for localization. You can use `string` or even custom `Error` to define it.
 
 ```ts
-const permissions = shield(
+const permissions = shield<Context>(
   {
     query: {
       items: allow,
@@ -235,7 +236,7 @@ const permissions = shield(
   },
 )
 
-const permissions = shield(
+const permissions = shield<Context>(
   {
     query: {
       items: allow,
@@ -252,7 +253,7 @@ const permissions = shield(
 Shield allows you to lock-in access. This way, you can seamlessly develop and publish your work without worrying about exposing your data. To lock in your service simply set `fallbackRule` to `deny` like this;
 
 ```ts
-const permissions = shield(
+const permissions = shield<Context>(
   {
     query: {
       users: allow,
