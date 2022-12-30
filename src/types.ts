@@ -1,100 +1,96 @@
 // Rule
 
-export type ShieldRule = IRule | ILogicRule
+export type ShieldRule<TContext> = IRule<TContext> | ILogicRule<TContext>
 
-export declare class IRule {
+export declare class IRule<TContext> {
   readonly name: string
 
   constructor(options: IRuleOptions)
 
-  equals(rule: IRule): boolean
+  equals(rule: IRule<TContext>): boolean
   resolve(
-    ctx: { [name: string]: any },
+    ctx: TContext,
     type: string,
     path: string,
     input: { [name: string]: any },
     rawInput: unknown,
-    options: IOptions,
+    options: IOptions<TContext>,
   ): Promise<IRuleResult>
 }
 
 export interface IRuleOptions {}
 
-export declare class ILogicRule {
-  constructor(rules: ShieldRule[])
+export declare class ILogicRule<TContext> {
+  constructor(rules: ShieldRule<TContext>[])
 
-  getRules(): ShieldRule[]
+  getRules(): ShieldRule<TContext>[]
   evaluate(
-    ctx: { [name: string]: any },
+    ctx: TContext,
     type: string,
     path: string,
     input: { [name: string]: any },
     rawInput: unknown,
-    options: IOptions,
+    options: IOptions<TContext>,
   ): Promise<IRuleResult[]>
   resolve(
-    ctx: { [name: string]: any },
+    ctx: TContext,
     type: string,
     path: string,
     input: { [name: string]: any },
     rawInput: unknown,
-    options: IOptions,
+    options: IOptions<TContext>,
   ): Promise<IRuleResult>
 }
 
 export type IRuleResult = boolean | string | Error
-export type IRuleFunction = (
-  ctx: { [name: string]: any },
+export type IRuleFunction<TContext extends Record<string, any> = Record<string, any>> = (
+  ctx: TContext,
   type: string,
   path: string,
   input: { [name: string]: any },
   rawInput: unknown,
-  options: IOptions,
+  options: IOptions<TContext>,
 ) => IRuleResult | Promise<IRuleResult>
 
 export interface IRuleConstructorOptions {}
 
 // Rules Definition Tree
 
-export interface IRuleTypeMap {
-  [key: string]: ShieldRule | IRuleFieldMap
+export interface IRuleTypeMap<TContext> {
+  [key: string]: ShieldRule<TContext> | IRuleFieldMap<TContext>
 }
 
-export interface IRuleFieldMap {
-  [key: string]: ShieldRule
+export interface IRuleFieldMap<TContext> {
+  [key: string]: ShieldRule<TContext>
 }
 
-export type IRules = ShieldRule | IRuleTypeMap
+export type IRules<TContext> = ShieldRule<TContext> | IRuleTypeMap<TContext>
 
-export type IFallbackErrorMapperType = (
+export type IFallbackErrorMapperType<TContext> = (
   err: unknown,
-  ctx: { [name: string]: any },
+  ctx: TContext,
   type: string,
   path: string,
   input: { [name: string]: any },
   rawInput: unknown,
 ) => Promise<Error> | Error
 
-export type IFallbackErrorType = Error | IFallbackErrorMapperType
+export type IFallbackErrorType<TContext> = Error | IFallbackErrorMapperType<TContext>
 
 // Generator Options
 
-export interface IOptions {
+export interface IOptions<TContext> {
   debug: boolean
   allowExternalErrors: boolean
-  fallbackRule: ShieldRule
-  fallbackError?: IFallbackErrorType
+  fallbackRule: ShieldRule<TContext>
+  fallbackError?: IFallbackErrorType<TContext>
 }
 
-export interface IOptionsConstructor {
+export interface IOptionsConstructor<TContext> {
   debug?: boolean
   allowExternalErrors?: boolean
-  fallbackRule?: ShieldRule
-  fallbackError?: string | IFallbackErrorType
+  fallbackRule?: ShieldRule<TContext>
+  fallbackError?: string | IFallbackErrorType<TContext>
 }
 
-export declare function shield(ruleTree: IRules, options: IOptions): any
-
-export interface IShieldContext {
-  _shield: {}
-}
+export declare function shield<TContext>(ruleTree: IRules<TContext>, options: IOptions<TContext>): any

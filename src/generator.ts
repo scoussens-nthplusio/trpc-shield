@@ -8,7 +8,10 @@ import { IOptions, IRules } from './types'
  * Generates middleware from given rules.
  *
  */
-export function generateMiddlewareFromRuleTree(ruleTree: IRules, options: IOptions) {
+export function generateMiddlewareFromRuleTree<TContext extends Record<string, unknown>>(
+  ruleTree: IRules<TContext>,
+  options: IOptions<TContext>,
+) {
   return ({
     next,
     ctx,
@@ -20,8 +23,8 @@ export function generateMiddlewareFromRuleTree(ruleTree: IRules, options: IOptio
     next: Function
     ctx: { [name: string]: any }
     type: string
-    path: string,
-    input: { [name: string]: any },
+    path: string
+    input: { [name: string]: any }
     rawInput: unknown
   }) => {
     const opWithPath: Array<string> = path.split('.')

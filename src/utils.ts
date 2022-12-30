@@ -1,5 +1,5 @@
-import { ShieldRule, ILogicRule, IRuleFieldMap, IRule } from './types'
-import { Rule, LogicRule } from './rules'
+import { LogicRule, Rule } from './rules'
+import { ILogicRule, IRule, IRuleFieldMap, ShieldRule } from './types'
 
 /**
  *
@@ -8,7 +8,7 @@ import { Rule, LogicRule } from './rules'
  * Makes sure that a certain field is a rule.
  *
  */
-export function isRule(x: any): x is IRule {
+export function isRule<TContext extends Record<string, any>>(x: any): x is IRule<TContext> {
   return x instanceof Rule || (x && x.constructor && x.constructor.name === 'Rule')
 }
 
@@ -19,7 +19,7 @@ export function isRule(x: any): x is IRule {
  * Makes sure that a certain field is a logic rule.
  *
  */
-export function isLogicRule(x: any): x is ILogicRule {
+export function isLogicRule<TContext extends Record<string, any>>(x: any): x is ILogicRule<TContext> {
   return (
     x instanceof LogicRule ||
     (x &&
@@ -41,7 +41,7 @@ export function isLogicRule(x: any): x is ILogicRule {
  * Makes sure that a certain field is a rule or a logic rule.
  *
  */
-export function isRuleFunction(x: any): x is ShieldRule {
+export function isRuleFunction<TContext extends Record<string, any>>(x: any): x is ShieldRule<TContext> {
   return isRule(x) || isLogicRule(x)
 }
 
@@ -52,7 +52,7 @@ export function isRuleFunction(x: any): x is ShieldRule {
  * Determines whether a certain field is rule field map or not.
  *
  */
-export function isRuleFieldMap(x: any): x is IRuleFieldMap {
+export function isRuleFieldMap<TContext extends Record<string, any>>(x: any): x is IRuleFieldMap<TContext> {
   return typeof x === 'object' && Object.values(x).every((rule) => isRuleFunction(rule))
 }
 
