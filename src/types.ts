@@ -57,7 +57,7 @@ export interface IRuleConstructorOptions {}
 // Rules Definition Tree
 
 export interface IRuleTypeMap<TContext> {
-  [key: string]: ShieldRule<TContext> | IRuleFieldMap<TContext>
+  [key: string]: ShieldRule<TContext> | IRuleFieldMap<TContext> | IRuleTypeMap<TContext>
 }
 
 export interface IRuleFieldMap<TContext> {

@@ -116,7 +116,7 @@ const permissions = shield<Context>({
   mutation: {
     addFruitToBasket: isAuthenticated,
   },
-})
+});
 
 export const t = trpc.initTRPC.context<Context>().create();
 
@@ -128,7 +128,32 @@ export const shieldedProcedure = t.procedure.use(permissionsMiddleware);
 For a fully working example, [go here](https://github.com/omar-dulaimi/trpc-shield/tree/master/example).
 ## Documentation
 
-### `shield(rules?, options?)`
+### Namespaced routers
+
+```ts
+export const permissions = shield<Context>({
+  user: {
+    query: {
+      aggregateUser: allow,
+      findFirstUser: allow,
+      findManyUser: isAuthenticated,
+      findUniqueUser: allow,
+      groupByUser: allow,
+    },
+    mutation: {
+      createOneUser: isAuthenticated,
+      deleteManyUser: allow,
+      deleteOneUser: allow,
+      updateManyUser: allow,
+      updateOneUser: allow,
+      upsertOneUser: allow,
+    },
+  },
+});
+```
+
+### API
+#### `shield(rules?, options?)`
 
 > Generates tRPC Middleware layer from your rules.
 
