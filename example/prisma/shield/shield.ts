@@ -1,9 +1,9 @@
-import { allow, rule, shield } from '../../../dist'
-import { Context } from '../../src/context'
+import { allow, rule, shield } from '../../../dist';
+import { Context } from '../../src/context';
 
 const isAuthenticated = rule<Context>()(async (ctx, type, path, input, rawInput) => {
-  return ctx.user !== null
-})
+  return ctx.user !== null;
+});
 
 export const permissions = shield<Context>({
   query: {
@@ -21,4 +21,4 @@ export const permissions = shield<Context>({
     updateOneUser: allow,
     upsertOneUser: allow,
   },
-})
+});
