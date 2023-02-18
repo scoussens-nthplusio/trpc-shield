@@ -1,4 +1,4 @@
-import { IOptions, IRules } from './types';
+import { IOptions, IRules, ShieldRule } from './types';
 
 /**
  *
@@ -21,7 +21,7 @@ export function generateMiddlewareFromRuleTree<TContext extends Record<string, u
     rawInput,
   }: {
     next: Function;
-    ctx: { [name: string]: any };
+    ctx: TContext;
     type: string;
     path: string;
     input: { [name: string]: any };
@@ -30,7 +30,7 @@ export function generateMiddlewareFromRuleTree<TContext extends Record<string, u
     const opWithPath: Array<string> = path.split('.');
     const opName: string = opWithPath[opWithPath.length - 1];
     const keys = Object.keys(ruleTree);
-    let rule;
+    let rule: ShieldRule<TContext> | undefined;
     if (keys.includes('query') || keys.includes('mutation')) {
       rule = ruleTree?.[type]?.[opName] || options.fallbackRule;
     } else {
@@ -44,7 +44,8 @@ export function generateMiddlewareFromRuleTree<TContext extends Record<string, u
     }
 
     if (rule) {
-      return rule?.resolve(ctx, type, path, input, rawInput, options).then((result: any) => {
+      return rule?.resolve(ctx, type, path, input, rawInput, options).then((result) => {
+        if (result instanceof Error) throw result;
         if (!result) throw options.fallbackError;
         return next();
       });
