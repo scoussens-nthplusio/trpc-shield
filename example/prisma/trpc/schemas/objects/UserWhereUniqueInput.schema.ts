@@ -1,6 +1,6 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserWhereUniqueInput> = z
   .object({
@@ -9,6 +9,6 @@ const Schema: z.ZodType<Prisma.UserWhereUniqueInput> = z
     email: z.string().optional(),
     googleId: z.string().optional(),
   })
-  .strict()
+  .strict();
 
-export const UserWhereUniqueInputObjectSchema = Schema
+export const UserWhereUniqueInputObjectSchema = Schema;

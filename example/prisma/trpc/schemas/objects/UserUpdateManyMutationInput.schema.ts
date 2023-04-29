@@ -1,9 +1,9 @@
-import { z } from 'zod'
-import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema'
-import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema'
-import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema'
+import { z } from 'zod';
+import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
+import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
+import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserUpdateManyMutationInput> = z
   .object({
@@ -22,6 +22,6 @@ const Schema: z.ZodType<Prisma.UserUpdateManyMutationInput> = z
       .optional()
       .nullable(),
   })
-  .strict()
+  .strict();
 
-export const UserUpdateManyMutationInputObjectSchema = Schema
+export const UserUpdateManyMutationInputObjectSchema = Schema;

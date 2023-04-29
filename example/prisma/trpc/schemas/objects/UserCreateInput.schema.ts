@@ -1,6 +1,6 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserCreateInput> = z
   .object({
@@ -10,6 +10,6 @@ const Schema: z.ZodType<Prisma.UserCreateInput> = z
     email: z.string(),
     googleId: z.string().optional().nullable(),
   })
-  .strict()
+  .strict();
 
-export const UserCreateInputObjectSchema = Schema
+export const UserCreateInputObjectSchema = Schema;

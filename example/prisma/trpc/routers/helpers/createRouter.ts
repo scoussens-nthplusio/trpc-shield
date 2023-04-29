@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { permissions } from "../../../shield/shield";
+import { permissions } from "../../shield/shield";
 
 import { Context } from '../../../../src/context';
 

@@ -1,6 +1,6 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserMinAggregateInputType> = z
   .object({
@@ -11,6 +11,6 @@ const Schema: z.ZodType<Prisma.UserMinAggregateInputType> = z
     email: z.literal(true).optional(),
     googleId: z.literal(true).optional(),
   })
-  .strict()
+  .strict();
 
-export const UserMinAggregateInputObjectSchema = Schema
+export const UserMinAggregateInputObjectSchema = Schema;

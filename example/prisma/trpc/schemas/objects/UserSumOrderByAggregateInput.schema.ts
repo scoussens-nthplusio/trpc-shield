@@ -1,12 +1,12 @@
-import { z } from 'zod'
-import { SortOrderSchema } from '../enums/SortOrder.schema'
+import { z } from 'zod';
+import { SortOrderSchema } from '../enums/SortOrder.schema';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserSumOrderByAggregateInput> = z
   .object({
     id: z.lazy(() => SortOrderSchema).optional(),
   })
-  .strict()
+  .strict();
 
-export const UserSumOrderByAggregateInputObjectSchema = Schema
+export const UserSumOrderByAggregateInputObjectSchema = Schema;

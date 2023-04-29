@@ -1,6 +1,6 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserSelect> = z
   .object({
@@ -11,6 +11,6 @@ const Schema: z.ZodType<Prisma.UserSelect> = z
     email: z.boolean().optional(),
     googleId: z.boolean().optional(),
   })
-  .strict()
+  .strict();
 
-export const UserSelectObjectSchema = Schema
+export const UserSelectObjectSchema = Schema;

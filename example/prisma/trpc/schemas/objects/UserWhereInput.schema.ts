@@ -1,10 +1,10 @@
-import { z } from 'zod'
-import { IntFilterObjectSchema } from './IntFilter.schema'
-import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema'
-import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema'
-import { StringFilterObjectSchema } from './StringFilter.schema'
+import { z } from 'zod';
+import { IntFilterObjectSchema } from './IntFilter.schema';
+import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
+import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
+import { StringFilterObjectSchema } from './StringFilter.schema';
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client';
 
 const Schema: z.ZodType<Prisma.UserWhereInput> = z
   .object({
@@ -30,6 +30,6 @@ const Schema: z.ZodType<Prisma.UserWhereInput> = z
       .optional()
       .nullable(),
   })
-  .strict()
+  .strict();
 
-export const UserWhereInputObjectSchema = Schema
+export const UserWhereInputObjectSchema = Schema;

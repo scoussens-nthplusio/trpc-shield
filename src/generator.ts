@@ -32,9 +32,11 @@ export function generateMiddlewareFromRuleTree<TContext extends Record<string, u
     const keys = Object.keys(ruleTree);
     let rule: ShieldRule<TContext> | undefined;
     if (keys.includes('query') || keys.includes('mutation')) {
+      //@ts-ignore
       rule = ruleTree?.[type]?.[opName] || options.fallbackRule;
     } else {
       for (const key of keys) {
+        //@ts-ignore
         const namespace = ruleTree[key];
         if (namespace?.[type]?.[opName]) {
           rule = namespace?.[type]?.[opName] || options.fallbackRule;

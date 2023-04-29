@@ -9,7 +9,7 @@ generator trpc {
   isGenerateInclude = true
   withMiddleware    = true
   withShield        = true
-  contextPath    = "../../../../src/context"
+  contextPath    = "../src/context"
 }
 
 generator trpc_shield {
