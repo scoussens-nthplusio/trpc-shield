@@ -232,7 +232,7 @@ const isEditor = rule<Context>()(async (ctx, type, path, input, rawInput) => {
 })
 
 const isOwner = rule<Context>()(async (ctx, type, path, input, rawInput) => {
-  return ctx.user.items.some((id) => id === parent.id)
+  return ctx.user.role === 'owner'
 })
 
 const permissions = shield<Context>({
